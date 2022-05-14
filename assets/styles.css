@@ -16,8 +16,6 @@ ul#nav a{
     text-decoration: none;
 }
 
-li#delete-user{
-    display: flex;
-    justify-content: space-around;
-    max-width: 8%;
+li a{
+    text-decoration: none;
 }

@@ -1,4 +1,4 @@
-const { getPlaces, getUsers, createUser, deleteUser } = require("../db");
+const { getPlaces, getUsers, createUser, deleteUser, getPlacesUser, getUser } = require("../db");
 const { head, nav } = require("../templates");
 const app = require('express').Router()
 
@@ -19,7 +19,8 @@ app.get('/', async(req,res,next) => {
                     </form>
                     <ul>
                         ${users.map(user => `
-                            <li id="delete-user">${user.name} <form method="POST" action="/users/${user.id}?_method=DELETE"><button>X</button></form></li>
+                            <li><a href="/users/${user.id}">${user.name}</a></li>
+                            <form method="POST" action="/users/${user.id}?_method=DELETE"><button>X</button></form>
                         `).join('')}
                     </ul>
                 </body>
@@ -29,6 +30,44 @@ app.get('/', async(req,res,next) => {
         next(error)
     }
 });
+
+app.get('/:id', async(req,res,next) =>{
+    try {
+        const [users, places, placeUser, user] = await Promise.all([getUsers(), getPlaces(), getPlacesUser(req.params.id), getUser(req.params.id)]);
+        if(placeUser.length){
+            res.send(`
+                <html>
+                    ${head({ title: "The Acme Users" })}
+                    <body>
+                        ${nav({ users, places })}
+                        <h1>Places visited by ${user.name}</h1>
+                        <ul>
+                        ${placeUser.map(place => `
+                            <li>${place.name}</li>
+                            `).join('')}
+                        </ul>
+                        <p><a href='/users'>Return to Users Page</a><p>
+                    </body>
+                </html>
+        `);
+        }else{
+            res.send(`
+                <html>
+                    ${head({ title: "The Acme Users" })}
+                    <body>
+                        ${nav({ users, places })}
+                        <h1>Places visited by ${user.name}</h1>
+                        <p>${user.name} has not visited places yet.</p>
+                        <p><a href='/users'>Return to Users Page</a><p>
+                    </body>
+                </html>
+            `);
+        }
+        
+    } catch (error) {
+        next(error)
+    }
+})
 
 app.post('/', async(req,res,next) => {
     try {
