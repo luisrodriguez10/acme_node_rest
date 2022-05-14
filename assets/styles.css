@@ -1,0 +1,23 @@
+body{
+    font-family: verdana;
+    padding: 1rem;
+}
+
+ul#nav{
+    display: flex;
+    background-color: dodgerblue;
+    justify-content: space-around;
+    list-style-type: none;
+    padding: 1rem;
+}
+
+ul#nav a{
+    color: cornsilk;
+    text-decoration: none;
+}
+
+li#delete-user{
+    display: flex;
+    justify-content: space-around;
+    max-width: 8%;
+}
