@@ -12,6 +12,10 @@ const getPlaces = async () => {
   return (await client.query('SELECT * FROM "Place";')).rows;
 };
 
+const createPlace = async ({ name }) => {
+  await client.query('INSERT INTO "Place"(name) VALUES($1)', [name]);
+};
+
 const createUser = async ({ name }) => {
   await client.query('INSERT INTO "User"(name) VALUES($1)', [name]);
 };
@@ -50,4 +54,5 @@ module.exports = {
   getPlaces,
   createUser,
   deleteUser,
+  createPlace,
 };
