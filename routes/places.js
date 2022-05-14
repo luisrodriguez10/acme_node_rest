@@ -9,7 +9,7 @@ app.get("/", async (req, res, next) => {
     const [users, places] = await Promise.all([getUsers(), getPlaces()]);
     res.send(`
             <html>
-                ${head({ title: "The Acme Club" })}
+                ${head({ title: "The Acme Places" })}
                 <body>
                     ${nav({ users, places })}
                     <h1>Places of the Acme Club</h1>
